@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { connect } from "react-redux";
+import { simpleAction } from "./actions/simpleAction";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(props) {
+    const simpleAction = (value) => {
+        console.log("value:::", value);
+        props.simpleAction(value);
+    };
+    return (
+        <div className="App">
+            <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <button onClick={() => simpleAction(new Date())}>Test redux action</button>
+                <pre>{JSON.stringify(props)}</pre>
+                <button onClick={() => simpleAction(null)}> Clear </button>
+            </header>
+        </div>
+    );
 }
-
-export default App;
+const mapStateToProps = (props) => ({
+    ...props,
+});
+const mapDispatchToProps = (dispatch) => ({
+    simpleAction: (payload) => dispatch(simpleAction(payload)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(App);
